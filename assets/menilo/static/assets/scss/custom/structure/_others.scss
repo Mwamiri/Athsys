@@ -1,0 +1,126 @@
+/*
+Template Name: Menilo - Admin & Dashboard Template
+Author: Pixeleyez
+Website: https://pixeleyez.com/
+File: others layout scss
+*/
+
+:is([data-sidebar="icon"], [data-sidebar="icon-hover"]) {
+  .#{$customPrefix}-app-sidebar-logo {
+    .logo-main {
+      h3 {
+        display: none;
+      }
+    }
+  }
+}
+
+:is([data-layout="horizontal"]) {
+  @include media-breakpoint-up(lg) {
+    .logo-main {
+      display: flex !important;
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  :is([data-layout="semibox"]) {
+    .#{$customPrefix}-app-sidebar-logo {
+      .logo-main {
+        h3 {
+          color: var(--#{$prefix}body-color) !important;
+        }
+      }
+    }
+  }
+
+  :is([data-layout="semibox"][data-bs-theme="dark"][data-sidebar-color="light"]) {
+    .#{$customPrefix}-app-sidebar-logo {
+      .logo-main {
+        h3 {
+          color: $white !important;
+        }
+      }
+    }
+  }
+
+  :is([data-sidebar="icon-hover"][data-sidebar-color="light"]) {
+    .icon-hover-btn {
+      color: var(--#{$prefix}black) !important;
+    }
+  }
+}
+
+:is([data-topbar-theme="dark"]) {
+  .app-header {
+    .header-menu-btn {
+      color: var(--#{$prefix}gray-400) !important;
+
+      &:hover,
+      &:active,
+      &:focus-visible {
+        background-color: #ced4da28 !important;
+      }
+
+      .icon-dot {
+        border-color: #274559;
+      }
+    }
+
+    .header-search-input {
+      background-color: rgba(var(--#{$prefix}white-rgb), 0.2) !important;
+      border-color: rgba(var(--#{$prefix}white-rgb), 0.2) !important;
+      color: $body-secondary-color-dark;
+    }
+
+    .header-search-btn {
+      i {
+        color: $body-secondary-color-dark !important;
+      }
+    }
+  }
+}
+:is([data-topbar-theme="dark"][data-bs-theme="light"]) {
+  .app-header {
+    &.sticky-scroll {
+      border-color: var(--#{$prefix}border-color);
+      .logo-main {
+        h3 {
+          color: $black !important;
+        }
+      }
+      .header-search-input {
+        border-color: var(--#{$prefix}border-color) !important;
+      }
+      .header-search-btn {
+        i {
+          color: $text-muted !important;
+        }
+      }
+      .header-menu-btn {
+        color: $text-muted !important;
+        &.show,
+        &:hover {
+          background-color: rgba(var(--#{$prefix}black-rgb), 0.08) !important;
+        }
+        .icon-dot {
+          border-color: $white;
+        }
+      }
+      .user-name {
+        color: $black;
+      }
+    }
+  }
+}
+:is([data-topbar-theme="dark"][data-bs-theme="dark"]) {
+  .app-header {
+    &.sticky-scroll {
+      .header-menu-btn {
+        .icon-dot {
+          border-color: var(--#{$prefix}app-sidebar-bg);
+        }
+      }
+    }
+  }
+}

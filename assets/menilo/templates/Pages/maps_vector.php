@@ -1,0 +1,41 @@
+<?= $this->element('title_meta', ['title' => 'Vector Maps']) ?>
+
+<!-- plugin css -->
+<link rel="stylesheet" type="text/css" href="assets/libs/jsvectormap/jsvectormap.min.css">
+
+<?= $this->element('page_title', ['title' => 'Maps', 'subTitle' => 'Vector Maps']) ?>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">World Map Markers</h5>
+            </div>
+            <div class="card-body">
+                <div id="world-map" class="min-h-320px"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">World Map With Marker Lines</h5>
+            </div>
+            <div class="card-body">
+                <div id="world-map-markers-line" class="min-h-320px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Vector map-->
+<script src="assets/libs/jsvectormap/jsvectormap.min.js"></script>
+
+<!-- world map -->
+<script src="assets/libs/jsvectormap/maps/world.js"></script>
+
+<!-- vector-maps init -->
+<script src="assets/js/map/vector-maps.init.js"></script>
+
+<!-- App js -->
+<script src="assets/js/app.js"></script>

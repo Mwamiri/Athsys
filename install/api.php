@@ -1,0 +1,239 @@
+<?php
+/**
+ * Installation API Endpoints
+ * Handles AJAX requests for installation wizard
+ */
+
+header('Content-Type: application/json');
+session_start();
+
+$action = $_POST['action'] ?? '';
+
+try {
+    switch ($action) {
+        case 'check_database':
+            checkDatabase();
+            break;
+        case 'create_database':
+            createDatabase();
+            break;
+        case 'import_schema':
+            importSchema();
+            break;
+        case 'save_config':
+            saveConfiguration();
+            break;
+        default:
+            throw new Exception('Invalid action');
+    }
+} catch (Exception $e) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+}
+
+/**
+ * Test database connection
+ */
+function checkDatabase() {
+    $host = $_POST['db_host'] ?? 'localhost';
+    $user = $_POST['db_user'] ?? '';
+    $pass = $_POST['db_pass'] ?? '';
+    
+    if (empty($user)) {
+        throw new Exception('Database username is required');
+    }
+    
+    try {
+        $pdo = new PDO(
+            "mysql:host={$host}",
+            $user,
+            $pass,
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        
+        // Store in session
+        $_SESSION['db_config'] = [
+            'host' => $host,
+            'user' => $user,
+            'pass' => $pass
+        ];
+        
+        echo json_encode([
+            'success' => true,
+            'message' => 'Database connection successful',
+            'progress' => 20
+        ]);
+    } catch (PDOException $e) {
+        throw new Exception('Connection failed: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Create or reset database
+ */
+function createDatabase() {
+    $config = $_SESSION['db_config'] ?? [];
+    
+    if (empty($config)) {
+        throw new Exception('Database credentials not found. Please test connection first.');
+    }
+    
+    $dbName = $_POST['db_name'] ?? '';
+    $resetDb = isset($_POST['reset_db']) && $_POST['reset_db'] === '1';
+    
+    if (empty($dbName)) {
+        throw new Exception('Database name is required');
+    }
+    
+    // Sanitize database name
+    $dbName = preg_replace('/[^a-zA-Z0-9_]/', '', $dbName);
+    
+    try {
+        $pdo = new PDO(
+            "mysql:host={$config['host']}",
+            $config['user'],
+            $config['pass'],
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        
+        if ($resetDb) {
+            $pdo->exec("DROP DATABASE IF EXISTS `{$dbName}`");
+        }
+        
+        $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        
+        // Update session
+        $_SESSION['db_config']['name'] = $dbName;
+        
+        echo json_encode([
+            'success' => true,
+            'message' => 'Database created successfully',
+            'progress' => 50
+        ]);
+    } catch (PDOException $e) {
+        throw new Exception('Database creation error: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Import database schema
+ */
+function importSchema() {
+    $config = $_SESSION['db_config'] ?? [];
+    
+    if (empty($config) || empty($config['name'])) {
+        throw new Exception('Database not configured. Please complete previous steps.');
+    }
+    
+    try {
+        $pdo = new PDO(
+            "mysql:host={$config['host']};dbname={$config['name']};charset=utf8mb4",
+            $config['user'],
+            $config['pass'],
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        
+        $sqlFile = __DIR__ . '/install/database.sql';
+        
+        if (!file_exists($sqlFile)) {
+            throw new Exception('Database schema file not found at: ' . $sqlFile);
+        }
+        
+        $sql = file_get_contents($sqlFile);
+        
+        // Split and execute queries
+        $queries = array_filter(array_map('trim', explode(';', $sql)));
+        
+        foreach ($queries as $query) {
+            if (!empty($query)) {
+                $pdo->exec($query);
+            }
+        }
+        
+        $_SESSION['db_config']['schema_imported'] = true;
+        
+        echo json_encode([
+            'success' => true,
+            'message' => 'Database schema imported successfully',
+            'progress' => 80
+        ]);
+    } catch (Exception $e) {
+        throw new Exception('Schema import error: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Save configuration file
+ */
+function saveConfiguration() {
+    $config = $_SESSION['db_config'] ?? [];
+    
+    if (empty($config)) {
+        throw new Exception('Configuration incomplete. Please start over.');
+    }
+    
+    $configFile = __DIR__ . '/config/database.php';
+    
+    if (!file_exists(dirname($configFile))) {
+        throw new Exception('Config directory not writable');
+    }
+    
+    $configContent = "<?php\n";
+    $configContent .= "// Database Configuration\n";
+    $configContent .= "// Auto-generated by Installation Wizard\n";
+    $configContent .= "// Generated: " . date('Y-m-d H:i:s') . "\n\n";
+    
+    $configContent .= "define('DB_HOST', '" . addslashes($config['host']) . "');\n";
+    $configContent .= "define('DB_NAME', '" . addslashes($config['name']) . "');\n";
+    $configContent .= "define('DB_USER', '" . addslashes($config['user']) . "');\n";
+    $configContent .= "define('DB_PASS', '" . addslashes($config['pass']) . "');\n";
+    $configContent .= "define('DB_CHARSET', 'utf8mb4');\n\n";
+    
+    $configContent .= "// Database Connection\n";
+    $configContent .= "try {\n";
+    $configContent .= "    \$dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;\n";
+    $configContent .= "    \$options = [\n";
+    $configContent .= "        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,\n";
+    $configContent .= "        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,\n";
+    $configContent .= "        PDO::ATTR_EMULATE_PREPARES => false,\n";
+    $configContent .= "    ];\n";
+    $configContent .= "    \n";
+    $configContent .= "    \$pdo = new PDO(\$dsn, DB_USER, DB_PASS, \$options);\n";
+    $configContent .= "} catch (PDOException \$e) {\n";
+    $configContent .= "    error_log('Database Connection Error: ' . \$e->getMessage());\n";
+    $configContent .= "    die('Database connection failed. Please contact the administrator.');\n";
+    $configContent .= "}\n";
+    $configContent .= "\n";
+    $configContent .= "function getDB() {\n";
+    $configContent .= "    global \$pdo;\n";
+    $configContent .= "    return \$pdo;\n";
+    $configContent .= "}\n";
+    $configContent .= "?>\n";
+    
+    if (file_put_contents($configFile, $configContent) === false) {
+        throw new Exception('Failed to write configuration file. Check directory permissions.');
+    }
+    
+    // Create installation lock file
+    $installDir = __DIR__ . '/install';
+    if (!is_dir($installDir)) {
+        mkdir($installDir, 0755, true);
+    }
+    
+    file_put_contents(
+        $installDir . '/.installed',
+        json_encode([
+            'installed_at' => date('Y-m-d H:i:s'),
+            'database' => $config['name'],
+            'php_version' => phpversion()
+        ])
+    );
+    
+    echo json_encode([
+        'success' => true,
+        'message' => 'Configuration saved successfully',
+        'progress' => 100
+    ]);
+}
+
+?>

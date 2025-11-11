@@ -1,0 +1,61 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore config files with credentials
+config/database.php
+
+# Ignore installation lock
+install/.installed
+
+# Ignore logs
+*.log
+logs/
+error_log
+
+# Ignore temporary files
+tmp/
+temp/
+*.tmp
+
+# Ignore cache
+cache/
+*.cache
+
+# Ignore uploads (if any)
+uploads/*
+!uploads/.gitkeep
+
+# Ignore vendor directories
+vendor/
+node_modules/
+
+# Ignore OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore backup files
+*.bak
+*.backup
+*.old
+*~
+
+# Ignore sensitive files
+.env
+.env.local
+*.pem
+*.key
+
+# Keep example config
+!config/database.example.php

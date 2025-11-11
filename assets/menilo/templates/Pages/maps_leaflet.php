@@ -1,0 +1,72 @@
+<?= $this->element('title_meta', ['title' => 'Leaflet Maps']) ?>
+
+<!-- Leaflet Maps -->
+<link rel="stylesheet" href="assets/libs/leaflet/leaflet.css">
+
+<?= $this->element('page_title', ['title' => 'Base UI', 'subTitle' => 'Leaflet Maps']) ?>
+
+<div class="row">
+
+    <div class="col-12 col-xl-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Leaflet Map</h5>
+            </div>
+            <div class="card-body">
+                <div class="w-100 min-h-320px" id="leaflet_map"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Map With Markers,circles and Polygons</h5>
+            </div>
+            <div class="card-body">
+                <div class="w-100 min-h-320px" id="leaflet_map_markers"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Map With Popup</h5>
+            </div>
+            <div class="card-body">
+                <div class="w-100 min-h-320px" id="leaflet_map_popup"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Map With Custom Icons</h5>
+            </div>
+            <div class="card-body">
+                <div class="w-100 min-h-320px" id="leaflet_map_custom_icon"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Map With Custom pane</h5>
+            </div>
+            <div class="card-body">
+                <div class="w-100 min-h-320px" id="leaflet_map_custom_pane"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Leaflet Maps plugins -->
+<script src="assets/libs/leaflet/leaflet.js"></script>
+
+<!-- Leaflet Maps init -->
+<script src="assets/js/map/leaflet-map.init.js"></script>
+
+<!-- App js -->
+<script src="assets/js/app.js"></script>

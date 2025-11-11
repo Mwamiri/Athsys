@@ -1,0 +1,72 @@
+========================================
+ATHLETE RESULTS SYSTEM - QUICK START
+========================================
+
+LOGIN ISSUE FIXED!
+------------------
+
+The login system has been completely recreated. You can now create your own administrator account during setup.
+
+
+HOW TO GET STARTED:
+-------------------
+
+1. Open your browser and go to:
+   http://localhost/your-folder/setup.php
+
+2. Follow the 5-step wizard:
+   - Step 1: Welcome screen
+   - Step 2: Enter MySQL credentials (host, username, password)
+   - Step 3: Create database (name: athletes)
+   - Step 4: Import schema (automatic)
+   - Step 5: CREATE YOUR ADMIN ACCOUNT (email, name, password)
+   - Step 6: Save configuration (automatic)
+   - Step 7: Complete!
+
+3. Login with the credentials YOU created in Step 5
+
+
+WHAT'S NEW:
+-----------
+
+✓ No more demo accounts
+✓ No more password hash issues
+✓ You create your own admin account during setup
+✓ Clean, modern setup wizard
+✓ Automatic database configuration
+✓ Redirects to setup if not configured
+
+
+DEFAULT CREDENTIALS:
+--------------------
+
+There are NO default credentials anymore!
+
+You create your own admin account during the setup wizard.
+
+
+TROUBLESHOOTING:
+----------------
+
+If you can't access setup.php:
+- Delete: install/.installed
+- Or visit: setup.php?force
+
+If database connection fails:
+- Make sure MySQL is running
+- Check your username and password
+- Use 'localhost' as host
+
+
+NEED HELP?
+----------
+
+Read the full guide: SETUP_GUIDE.md
+
+Or contact: support@mwamiri.co.ke
+
+
+========================================
+Created: November 12, 2025
+Version: 2.0
+========================================
