@@ -6,6 +6,21 @@ This is a complete PHP/MySQL version of the Athlete Results System designed spec
 
 ---
 
+## 🚨 **Can't Login? Setup Required!**
+
+If you're being redirected or seeing errors when trying to login:
+
+**Quick Fix:** Visit `setup.php` in your browser to run the installation wizard (takes 2 minutes)
+
+**Guides:**
+- 📘 [QUICK-FIX.md](QUICK-FIX.md) - Fast 2-minute setup guide
+- 📗 [SETUP-REQUIRED.md](SETUP-REQUIRED.md) - Complete setup instructions
+- 📕 [LOGIN-TROUBLESHOOTING.md](LOGIN-TROUBLESHOOTING.md) - Login issues help
+
+The system needs to be configured before first use. This is normal and expected!
+
+---
+
 ## 📋 **System Requirements**
 
 ✅ PHP 7.4 or higher (PHP 8.x recommended)  

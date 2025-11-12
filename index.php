@@ -8,6 +8,12 @@ if (!file_exists($installLockFile)) {
     exit();
 }
 
+// Check if database configuration exists
+if (!file_exists(__DIR__ . '/config/database.php')) {
+    header('Location: setup.php');
+    exit();
+}
+
 require_once 'config/database.php';
 require_once 'includes/functions.php';
 
