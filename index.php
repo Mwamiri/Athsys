@@ -197,4 +197,12 @@ include 'includes/header.php';
                                 </td>
                             </tr>
                             <?php endforeach; ?>
-     
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<?php include 'includes/footer.php'; ?>
