@@ -4,6 +4,11 @@
  * Run this to test your database configuration
  */
 
+// Include database configuration if it exists
+if (file_exists(__DIR__ . '/config/database.php')) {
+    require_once __DIR__ . '/config/database.php';
+}
+
 echo "<h2>🔍 Database Diagnostic Report</h2>";
 echo "<hr>";
 

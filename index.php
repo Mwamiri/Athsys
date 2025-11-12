@@ -11,6 +11,12 @@ if (!file_exists($installLockFile)) {
 require_once 'config/database.php';
 require_once 'includes/functions.php';
 
+// Check if database is properly configured
+if (!isDatabaseConfigured()) {
+    header('Location: setup.php');
+    exit();
+}
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');

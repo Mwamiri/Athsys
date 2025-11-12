@@ -10,6 +10,12 @@ if (!file_exists($installLockFile)) {
 
 require_once 'config/database.php';
 
+// Check if database is properly configured
+if (!isDatabaseConfigured()) {
+    header('Location: setup.php');
+    exit();
+}
+
 $error = '';
 
 // If already logged in, redirect to dashboard
