@@ -8,13 +8,14 @@ if (!file_exists($installLockFile)) {
     exit();
 }
 
-require_once 'config/database.php';
-
-// Check if database is properly configured
-if (!isDatabaseConfigured()) {
+// Check if database configuration exists
+if (!file_exists(__DIR__ . '/config/database.php')) {
+    // Installation lock exists but database.php missing - redirect to setup
     header('Location: setup.php');
     exit();
 }
+
+require_once 'config/database.php';
 
 $error = '';
 

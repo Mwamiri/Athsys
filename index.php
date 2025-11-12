@@ -8,14 +8,14 @@ if (!file_exists($installLockFile)) {
     exit();
 }
 
-require_once 'config/database.php';
-require_once 'includes/functions.php';
-
-// Check if database is properly configured
-if (!isDatabaseConfigured()) {
+// Check if database configuration exists
+if (!file_exists(__DIR__ . '/config/database.php')) {
     header('Location: setup.php');
     exit();
 }
+
+require_once 'config/database.php';
+require_once 'includes/functions.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
